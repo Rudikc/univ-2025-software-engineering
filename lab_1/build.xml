@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Lab1Template" default="run" basedir=".">
+<project name="Lab111Template" default="run" basedir=".">
     <property name="src.dir" value="src"/>
     <property name="build.dir" value="bin"/>
     <property name="dist.dir" value="out"/>
@@ -16,15 +16,15 @@
 
     <target name="jar" depends="compile">
         <mkdir dir="${dist.dir}"/>
-        <jar destfile="${dist.dir}/Lab1Template.jar" basedir="${build.dir}">
+        <jar destfile="${dist.dir}/Lab111Template.jar" basedir="${build.dir}">
             <manifest>
-                <attribute name="Main-Class" value="com.main.TestMain"/>
+                <attribute name="Main-Class" value="com.lab111.TestMain"/>
             </manifest>
         </jar>
     </target>
 
     <target name="run" depends="jar">
-        <java jar="${dist.dir}/Lab1Template.jar" fork="true"/>
+        <java jar="${dist.dir}/Lab111Template.jar" fork="true"/>
     </target>
 
     <target name="collect-jars">
