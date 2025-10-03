@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-    <name>Lab111Template</name>
-    <comment></comment>
+    <name>Lab111UnifiedProject</name>
+    <comment>Об'єднаний проект для всіх лабораторних робіт</comment>
     <projects/>
     <buildSpec>
         <buildCommand>

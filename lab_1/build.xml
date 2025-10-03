@@ -1,36 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Lab111Template" default="run" basedir=".">
+<project name="Lab111UnifiedProject" default="run" basedir=".">
+    <!-- Властивості проекту -->
     <property name="src.dir" value="src"/>
     <property name="build.dir" value="bin"/>
     <property name="dist.dir" value="out"/>
+    <property name="doc.dir" value="doc"/>
+    <property name="javadoc.dir" value="${doc.dir}/javadoc"/>
+    
+    <!-- Інформація про проект -->
+    <property name="project.name" value="Lab111UnifiedProject"/>
+    <property name="project.author" value="Student"/>
 
-    <target name="clean">
+    <!-- Очищення всіх згенерованих файлів -->
+    <target name="clean" description="Видалення всіх згенерованих файлів">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
+        <delete dir="${javadoc.dir}"/>
+        <echo message="Проект очищено"/>
     </target>
 
-    <target name="compile">
+    <!-- Компіляція всіх Java файлів -->
+    <target name="compile" description="Компіляція всіх Java файлів проекту">
         <mkdir dir="${build.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+        <javac srcdir="${src.dir}" 
+               destdir="${build.dir}" 
+               includeantruntime="false"
+               encoding="UTF-8"/>
+        <echo message="Компіляція завершена успішно"/>
     </target>
 
-    <target name="jar" depends="compile">
+    <!-- Створення JAR для Лабораторної роботи №1 -->
+    <target name="jar-lab1" depends="compile" description="Створення JAR архіву для ЛР1">
         <mkdir dir="${dist.dir}"/>
-        <jar destfile="${dist.dir}/Lab111Template.jar" basedir="${build.dir}">
+        <jar destfile="${dist.dir}/Lab1.jar" basedir="${build.dir}">
             <manifest>
                 <attribute name="Main-Class" value="com.lab111.TestMain"/>
+                <attribute name="Implementation-Title" value="Lab1"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Implementation-Vendor" value="${project.author}"/>
             </manifest>
         </jar>
+        <echo message="JAR файл для ЛР1 створено: ${dist.dir}/Lab1.jar"/>
     </target>
 
-    <target name="run" depends="jar">
-        <java jar="${dist.dir}/Lab111Template.jar" fork="true"/>
+    <!-- Створення JAR для Лабораторної роботи №2 -->
+    <target name="jar-lab2" depends="compile" description="Створення JAR архіву для ЛР2">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/Lab2.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.lab111.labwork2.TestMain"/>
+                <attribute name="Implementation-Title" value="Lab2"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Implementation-Vendor" value="${project.author}"/>
+            </manifest>
+        </jar>
+        <echo message="JAR файл для ЛР2 створено: ${dist.dir}/Lab2.jar"/>
     </target>
 
-    <target name="collect-jars">
+    <!-- Створення JAR для Лабораторної роботи №3 -->
+    <target name="jar-lab3" depends="compile" description="Створення JAR архіву для ЛР3">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/Lab3.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.lab111.labwork3.TestMain"/>
+                <attribute name="Implementation-Title" value="Lab3"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Implementation-Vendor" value="${project.author}"/>
+            </manifest>
+        </jar>
+        <echo message="JAR файл для ЛР3 створено: ${dist.dir}/Lab3.jar"/>
+    </target>
+
+    <!-- Створення всіх JAR файлів -->
+    <target name="jar-all" depends="jar-lab1, jar-lab2, jar-lab3" description="Створення всіх JAR архівів">
+        <echo message="Всі JAR файли створено"/>
+    </target>
+
+    <!-- Запуск Лабораторної роботи №1 -->
+    <target name="run-lab1" depends="jar-lab1" description="Запуск ЛР1">
+        <echo message="=== Запуск Лабораторної роботи №1 ==="/>
+        <java jar="${dist.dir}/Lab1.jar" fork="true"/>
+    </target>
+
+    <!-- Запуск Лабораторної роботи №2 -->
+    <target name="run-lab2" depends="jar-lab2" description="Запуск ЛР2">
+        <echo message="=== Запуск Лабораторної роботи №2 ==="/>
+        <java jar="${dist.dir}/Lab2.jar" fork="true"/>
+    </target>
+
+    <!-- Запуск Лабораторної роботи №3 -->
+    <target name="run-lab3" depends="jar-lab3" description="Запуск ЛР3">
+        <echo message="=== Запуск Лабораторної роботи №3 ==="/>
+        <java jar="${dist.dir}/Lab3.jar" fork="true"/>
+    </target>
+
+    <!-- За замовчуванням запускаємо останню лабораторну -->
+    <target name="run" depends="run-lab2" description="Запуск останньої лабораторної роботи"/>
+
+    <!-- Генерація JavaDoc документації -->
+    <target name="javadoc" description="Генерація JavaDoc документації">
+        <mkdir dir="${javadoc.dir}"/>
+        <javadoc sourcepath="${src.dir}"
+                 destdir="${javadoc.dir}"
+                 packagenames="com.lab111.*"
+                 encoding="UTF-8"
+                 docencoding="UTF-8"
+                 charset="UTF-8"
+                 author="true"
+                 version="true"
+                 use="true"
+                 windowtitle="${project.name} API Documentation">
+            <doctitle><![CDATA[<h1>Об'єднаний проект Лабораторних робіт</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Generated by JavaDoc for ${project.name}</i>]]></bottom>
+        </javadoc>
+        <echo message="JavaDoc згенеровано в ${javadoc.dir}"/>
+    </target>
+
+    <!-- Завдання з ЛР1: Створення каталогу new-out та копіювання всіх JAR файлів -->
+    <target name="collect-jars" description="Копіювання всіх JAR файлів до каталогу new-out (Завдання ЛР1)">
         <mkdir dir="new-out"/>
         <copy todir="new-out">
             <fileset dir="." includes="**/*.jar" excludes="new-out/**"/>
         </copy>
+        <echo message="Всі JAR файли скопійовано до new-out"/>
+    </target>
+
+    <!-- Повна збірка проекту -->
+    <target name="all" depends="clean, compile, jar-all, javadoc" description="Повна збірка всього проекту">
+        <echo message="=== Проект повністю зібрано ==="/>
+        <echo message="Скомпільовані класи: ${build.dir}"/>
+        <echo message="JAR архіви: ${dist.dir}"/>
+        <echo message="JavaDoc документація: ${javadoc.dir}"/>
+    </target>
+
+    <!-- Виведення допомоги -->
+    <target name="help" description="Виведення списку доступних цілей">
+        <echo message="=== Доступні цілі ANT ==="/>
+        <echo message="clean       - Очищення всіх згенерованих файлів"/>
+        <echo message="compile     - Компіляція всіх Java файлів"/>
+        <echo message="jar-lab1    - Створення JAR для ЛР1"/>
+        <echo message="jar-lab2    - Створення JAR для ЛР2"/>
+        <echo message="jar-lab3    - Створення JAR для ЛР3"/>
+        <echo message="jar-all     - Створення всіх JAR файлів"/>
+        <echo message="run-lab1    - Запуск ЛР1"/>
+        <echo message="run-lab2    - Запуск ЛР2"/>
+        <echo message="run-lab3    - Запуск ЛР3"/>
+        <echo message="javadoc     - Генерація JavaDoc документації"/>
+        <echo message="collect-jars- Копіювання всіх JAR файлів (завдання ЛР1)"/>
+        <echo message="all         - Повна збірка проекту"/>
     </target>
 </project>
