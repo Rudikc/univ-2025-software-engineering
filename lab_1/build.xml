@@ -71,8 +71,22 @@
         <echo message="JAR файл для ЛР3 створено: ${dist.dir}/Lab3.jar"/>
     </target>
 
+    <!-- Створення JAR для Лабораторної роботи №4 -->
+    <target name="jar-lab4" depends="compile" description="Створення JAR архіву для ЛР4">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/Lab4.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.lab111.labwork4.TestMain"/>
+                <attribute name="Implementation-Title" value="Lab4"/>
+                <attribute name="Implementation-Version" value="1.0"/>
+                <attribute name="Implementation-Vendor" value="${project.author}"/>
+            </manifest>
+        </jar>
+        <echo message="JAR файл для ЛР4 створено: ${dist.dir}/Lab4.jar"/>
+    </target>
+
     <!-- Створення всіх JAR файлів -->
-    <target name="jar-all" depends="jar-lab1, jar-lab2, jar-lab3" description="Створення всіх JAR архівів">
+    <target name="jar-all" depends="jar-lab1, jar-lab2, jar-lab3, jar-lab4" description="Створення всіх JAR архівів">
         <echo message="Всі JAR файли створено"/>
     </target>
 
@@ -94,8 +108,14 @@
         <java jar="${dist.dir}/Lab3.jar" fork="true"/>
     </target>
 
+    <!-- Запуск Лабораторної роботи №4 -->
+    <target name="run-lab4" depends="jar-lab4" description="Запуск ЛР4">
+        <echo message="=== Запуск Лабораторної роботи №4 ==="/>
+        <java jar="${dist.dir}/Lab4.jar" fork="true"/>
+    </target>
+
     <!-- За замовчуванням запускаємо останню лабораторну -->
-    <target name="run" depends="run-lab2" description="Запуск останньої лабораторної роботи"/>
+    <target name="run" depends="run-lab4" description="Запуск останньої лабораторної роботи"/>
 
     <!-- Генерація JavaDoc документації -->
     <target name="javadoc" description="Генерація JavaDoc документації">
